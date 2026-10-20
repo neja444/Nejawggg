@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0b1b3a">
+  <title>ExitPrep Ethiopia</title>
+  <style>
+/* ExitPrep design system — navy / blue / white, with a subtle Ethiopian tricolour accent */
+:root {
+  --bg: #f1f7f3; --card: #ffffff; --text: #0c2418; --muted: #587566; --line: #dbe9e0;
+  --brand: #0f8a46; --on-brand: #ffffff; --brand-soft: #e3f4ea; --top: #0d7a45; --navy: #0b6b3b; --navy-2: #0a4f2c;
+  --good: #0f9d58; --good-soft: #e0f5e9; --bad: #d93025; --bad-soft: #fdeceb; --warn: #a86400; --warn-soft: #fff1d6;
+  --eth-green: #078930; --eth-yellow: #fcdd09; --eth-red: #da121a;
+  --shadow: 0 1px 2px rgba(8,40,22,.06), 0 6px 18px rgba(8,40,22,.07);
+  --radius: 20px; --nav-h: 66px;
+}
+[data-theme="dark"] {
+  --bg: #07130d; --card: #0e2217; --text: #eaf6ee; --muted: #8aa896; --line: #1b3a29;
+  --brand: #2ad46f; --on-brand: #04210f; --brand-soft: #12301f; --top: #0d7a45; --navy: #0e5a37; --navy-2: #0a2d1d;
+  --good: #4ade80; --good-soft: #0f2e1c; --bad: #ff7b72; --bad-soft: #35171a; --warn: #f2b632; --warn-soft: #2f2711;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 22px rgba(0,0,0,.35);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Ethiopic", sans-serif; }
+body { overscroll-behavior-y: none; }
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+h2 { font-size: 20px; } h3 { font-size: 16px; }
+a { color: var(--brand); }
+button { font: inherit; color: inherit; cursor: pointer; }
+.muted { color: var(--muted); } .small { font-size: 13px; } .center { text-align: center; }
+.row { display: flex; align-items: center; gap: 10px; } .between { justify-content: space-between; } .wrap { flex-wrap: wrap; }
+.grow { flex: 1; min-width: 0; } .gap { display: grid; gap: 12px; }
+
+/* layout */
+.tricolor { height: 4px; background: linear-gradient(90deg, var(--eth-green) 0 33.33%, var(--eth-yellow) 33.33% 66.66%, var(--eth-red) 66.66%); }
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--top); color: #fff; }
+.topbar .in { display: flex; align-items: center; gap: 10px; padding: 12px 16px; max-width: 640px; margin: 0 auto; }
+.topbar h1 { font-size: 18px; font-weight: 700; flex: 1; }
+.topbar .iconbtn { background: rgba(255,255,255,.12); border: 0; color: #fff; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; }
+main { max-width: 640px; margin: 0 auto; padding: 16px 16px calc(var(--nav-h) + 28px); display: grid; gap: 16px; animation: fade .25s ease; }
+main.noNav { padding-bottom: 120px; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.bottomnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--card); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+.bottomnav .in { display: grid; grid-template-columns: repeat(5, 1fr); max-width: 640px; margin: 0 auto; }
+.bottomnav a { display: grid; justify-items: center; gap: 2px; margin: 6px 3px; padding: 6px 0 5px; border-radius: 16px; font-size: 11px; font-weight: 600; color: var(--muted); text-decoration: none; }
+.bottomnav a.on { color: var(--brand); background: var(--brand-soft); }
+.bottomnav svg { width: 24px; height: 24px; }
+
+/* cards + buttons */
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; border: 1px solid var(--line); }
+.card.flat { box-shadow: none; }
+.hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; border: 0; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.07); }
+.hero .muted { color: rgba(255,255,255,.75); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 20px; border-radius: 14px; border: 0; font-weight: 700; background: var(--brand); color: var(--on-brand); width: 100%; transition: transform .08s, opacity .2s; }
+.btn:active { transform: scale(.98); }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+.btn.ghost { background: var(--brand-soft); color: var(--brand); }
+.btn.line { background: transparent; border: 1.5px solid var(--line); color: var(--text); }
+.btn.good { background: var(--good); } .btn.bad { background: var(--bad); }
+.btn.white { background: #fff; color: var(--navy); }
+.btn.sm { min-height: 40px; padding: 0 14px; width: auto; border-radius: 12px; font-size: 14px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); font-weight: 600; font-size: 14px; }
+.chip.on { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); letter-spacing: .02em; }
+.badge.sample { background: var(--warn-soft); color: var(--warn); }
+.badge.good { background: var(--good-soft); color: var(--good); } .badge.bad { background: var(--bad-soft); color: var(--bad); }
+input[type=text], input[type=search], input[type=number], select, textarea { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); color: var(--text); font: inherit; }
+textarea { min-height: 90px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.search { position: relative; } .search svg { position: absolute; left: 14px; top: 14px; width: 20px; height: 20px; color: var(--muted); } .search input { padding-left: 44px; }
+label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+
+/* home */
+.greet h2 { font-size: 22px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; text-align: left; box-shadow: var(--shadow); display: grid; gap: 6px; text-decoration: none; color: var(--text); align-content: start; }
+.tile .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.tile .ic { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; font-size: 25px; background: var(--brand-soft); }
+.tile .tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; padding: 6px 12px; border-radius: 999px; background: var(--brand-soft); color: var(--muted); }
+.tile.gold .ic, .tile.gold .tag { background: var(--warn-soft); } .tile.gold .tag, .tile.gold .open { color: var(--warn); }
+.tile b { font-size: 18px; line-height: 1.25; } .tile .am2 { font-weight: 800; font-size: 17px; }
+.tile .desc { font-size: 14px; color: var(--muted); } .tile .desc2 { font-size: 13px; color: var(--muted); }
+.tile .open { color: var(--brand); font-weight: 800; margin-top: 8px; }
+.pagehead { display: flex; align-items: center; gap: 10px; } .pagehead h2 { font-size: 24px; } .am { font-size: 13px; color: var(--muted); }
+.iconbtn2 { flex: none; width: 46px; height: 46px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; font-size: 22px; }
+.studying { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); text-decoration: none; color: var(--text); }
+.studying .ico { flex: none; width: 52px; height: 52px; border-radius: 15px; background: var(--brand-soft); display: grid; place-items: center; font-size: 27px; }
+.studying h2 { font-size: 21px; } .eyebrow { font-size: 12px; letter-spacing: .12em; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+.sectionlabel { font-size: 13px; letter-spacing: .16em; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+.commbtn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 64px; padding: 8px; text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); font-weight: 700; text-decoration: none; color: var(--text); }
+.lbrow { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); } .lbrow:first-child { border-top: 0; }
+.lbrow.me { background: var(--brand-soft); margin: 0 -10px; padding: 12px 10px; border-radius: 12px; border-top: 0; }
+.rank { flex: none; width: 36px; text-align: center; font-weight: 800; font-size: 18px; }
+.stat { text-align: center; } .stat b { display: block; font-size: 22px; } .stat span { font-size: 12px; color: var(--muted); }
+.statrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.countdown { font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 800; letter-spacing: .02em; }
+.banner-warn { background: var(--warn-soft); border-color: transparent; }
+
+/* lists */
+details.cat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+details.cat summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; font-weight: 700; cursor: pointer; }
+details.cat summary::-webkit-details-marker { display: none; }
+details.cat summary .chev { margin-left: auto; transition: transform .2s; color: var(--muted); }
+details.cat[open] summary .chev { transform: rotate(90deg); }
+.dept { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px 16px; background: none; border: 0; border-top: 1px solid var(--line); text-align: left; }
+.dept:active { background: var(--brand-soft); }
+.dept .n { margin-left: auto; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); text-decoration: none; color: inherit; }
+.list-item:first-child { border-top: 0; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--brand-soft); border-radius: 14px; padding: 4px; gap: 4px; }
+.seg button { border: 0; background: none; border-radius: 11px; padding: 10px 4px; font-weight: 700; font-size: 13px; color: var(--muted); }
+.seg button.on { background: var(--card); color: var(--brand); box-shadow: var(--shadow); }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* progress bars */
+.bar { height: 10px; border-radius: 99px; background: var(--brand-soft); overflow: hidden; } .bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--brand), #7ee2a8); }
+.bar.low i { background: linear-gradient(90deg, var(--bad), #ff9a8f); } .bar.mid i { background: linear-gradient(90deg, #e69500, #ffc857); } .bar.high i { background: linear-gradient(90deg, var(--good), #6fe3a6); }
+
+/* exam */
+.examtop { position: sticky; top: 0; z-index: 25; background: var(--card); border-bottom: 1px solid var(--line); }
+.examtop .in { max-width: 640px; margin: 0 auto; padding: 10px 16px; display: grid; gap: 8px; }
+.timer { font-variant-numeric: tabular-nums; font-weight: 800; padding: 4px 10px; border-radius: 10px; background: var(--brand-soft); color: var(--brand); }
+.timer.low { background: var(--bad-soft); color: var(--bad); }
+.qtext { font-size: 18px; font-weight: 600; line-height: 1.45; white-space: pre-wrap; }
+.choice { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; padding: 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); transition: border-color .15s, background .15s; }
+.choice .k { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: 13px; color: var(--muted); }
+.choice.multi .k { border-radius: 8px; }
+.choice.sel { border-color: var(--brand); background: var(--brand-soft); } .choice.sel .k { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.choice.right { border-color: var(--good); background: var(--good-soft); } .choice.right .k { background: var(--good); border-color: var(--good); color: #fff; }
+.choice.wrong { border-color: var(--bad); background: var(--bad-soft); } .choice.wrong .k { background: var(--bad); border-color: var(--bad); color: #fff; }
+.choice[disabled] { cursor: default; }
+.feedback { border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; animation: fade .25s ease; }
+.feedback.ok { background: var(--good-soft); } .feedback.no { background: var(--bad-soft); }
+.feedback h3 { font-size: 17px; } .feedback .blk { background: rgba(255,255,255,.55); border-radius: 12px; padding: 10px 12px; font-size: 14.5px; white-space: pre-wrap; }
+[data-theme="dark"] .feedback .blk { background: rgba(255,255,255,.06); }
+.blk .lbl { display: block; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.formula { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.footbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: var(--card); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+.footbar .in { max-width: 640px; margin: 0 auto; display: flex; gap: 10px; }
+.navgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 8px; }
+.navgrid button { height: 46px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); font-weight: 700; }
+.navgrid button.ans { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.navgrid button.mk { box-shadow: inset 0 0 0 2px var(--warn); }
+.navgrid button.cur { background: var(--brand); color: var(--on-brand); border-color: var(--brand); }
+
+/* result */
+.ring { width: 148px; height: 148px; margin: 0 auto; position: relative; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); } .ring .t { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.ring b { font-size: 34px; line-height: 1; } .ring span { font-size: 12px; color: var(--muted); }
+details.rev { border-top: 1px solid var(--line); padding: 12px 0; }
+details.rev summary { list-style: none; display: flex; gap: 10px; cursor: pointer; font-weight: 600; }
+details.rev summary::-webkit-details-marker { display: none; }
+.dot { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; color: #fff; font-weight: 800; }
+.dot.ok { background: var(--good); } .dot.no { background: var(--bad); }
+
+/* modal / toast / states */
+.modal-back { position: fixed; inset: 0; z-index: 60; background: rgba(5,10,25,.55); display: grid; align-items: end; animation: fade .15s ease; }
+.modal { background: var(--card); border-radius: 24px 24px 0 0; padding: 20px 16px calc(20px + env(safe-area-inset-bottom)); max-width: 640px; width: 100%; margin: 0 auto; display: grid; gap: 14px; max-height: 85vh; overflow: auto; }
+.toast { position: fixed; left: 50%; bottom: 90px; transform: translate(-50%, 20px); background: var(--top); color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: .25s; z-index: 80; max-width: 90%; text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.splash { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 16px; background: #0a2d1d; color: #fff; }
+.logo-mark { width: 64px; height: 64px; border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: 1fr 1fr 1fr; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.logo-mark i:nth-child(1) { background: var(--eth-green); } .logo-mark i:nth-child(2) { background: var(--eth-yellow); } .logo-mark i:nth-child(3) { background: var(--eth-red); }
+.spinner { width: 28px; height: 28px; border-radius: 50%; border: 3px solid rgba(255,255,255,.25); border-top-color: #fff; animation: spin .8s linear infinite; }
+.skel { height: 90px; border-radius: var(--radius); background: linear-gradient(90deg, var(--line), var(--card), var(--line)); background-size: 200% 100%; animation: sh 1.2s infinite; }
+@keyframes spin { to { transform: rotate(360deg); } } @keyframes sh { to { background-position: -200% 0; } }
+.empty { text-align: center; padding: 28px 12px; display: grid; gap: 8px; justify-items: center; } .empty .big { font-size: 42px; }
+.price { font-size: 40px; font-weight: 800; } .price small { font-size: 16px; font-weight: 600; opacity: .8; }
+ul.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; } ul.ticks li::before { content: "✓"; color: var(--good); font-weight: 800; margin-right: 8px; }
+.notice { border-left: 4px solid var(--warn); background: var(--warn-soft); padding: 12px; border-radius: 10px; font-size: 14px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 14px; } .kv dt { color: var(--muted); } .kv dd { margin: 0; text-align: right; font-weight: 600; }
+.copy { font-family: ui-monospace, Menlo, monospace; background: var(--brand-soft); padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.codeblk { margin: 10px 0 0; padding: 12px 14px; background: var(--brand-soft); border: 1px solid var(--line); border-radius: 12px; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; overflow-x: auto; color: var(--text); }
+
+</style>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="splash"><div class="logo-mark"><i></i><i></i><i></i></div><h1>ExitPrep</h1><div class="spinner"></div></div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script>
+/* BACKEND ADDRESS: paste your Cloudflare Worker URL here (no slash at the end). Example: 'https://exitprep-api.yourname.workers.dev' */
+window.API_URL = 'https://YOUR-WORKER-URL.workers.dev';
+</script>
+
+
+
+<script>
+/* ExitPrep Ethiopia — Telegram Mini App frontend (plain JavaScript, no build step).
+   Layout of this file:  1) helpers  2) Telegram + theme  3) screens (home, learn, dept, exam, result,
+   progress, saved, subscribe, account)  4) router + boot.
+   IMPORTANT: this code only DISPLAYS access state. The server decides who is allowed to do what. */
+(() => {
+'use strict';
+const tg = window.Telegram && window.Telegram.WebApp;
+const $app = document.getElementById('app');
+const S = { me: null, catalog: null, offset: 0, intent: 'practice', uni: Number(localStorage.getItem('uni')) || 0 };
+let timers = [];
+
+/* ============ 1. helpers ============ */
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = (n) => String(n).padStart(2, '0');
+const now = () => Date.now() + S.offset;                       // server-corrected clock (display only)
+const fmtDate = (ms) => new Date(ms).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+const fmtDay = (ms) => new Date(ms).toLocaleDateString(undefined, { dateStyle: 'medium' });
+const fmtDur = (s) => { s = Math.round(s || 0); const m = Math.floor(s / 60); return m ? `${m}m ${pad(s % 60)}s` : `${s}s`; };
+const fmtCd = (ms) => { if (ms <= 0) return '00:00:00'; const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60); return d ? `${d}d ${pad(h)}h ${pad(m)}m` : `${pad(h)}:${pad(m)}:${pad(s % 60)}`; };
+const cls = (pct) => (pct >= 70 ? 'high' : pct >= 50 ? 'mid' : 'low');
+const LETTERS = 'ABCDEFGH';
+const MODES = { practice: ['Practice', 'Instant feedback and a full explanation after every answer.'], past: ['Past-year exam', 'Exam-style paper for one year. Explanations after you submit.'], mock: ['Timed mock', 'Timed (1 minute per question). Explanations after you submit.'] };
+
+const ICON = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>',
+  learn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/><path d="M9 8h6"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
+  dash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>',
+  faq: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2"/><path d="M12 17.2h.01"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H4v1a4 4 0 004 4M16 6h4v1a4 4 0 01-4 4"/><path d="M12 13v4M8 21h8M9.5 17h5"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+  moon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13A9 9 0 1111 3a7 7 0 0010 10z"/></svg>',
+  chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+  flag: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+  mark: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  grid: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+};
+
+async function api(path, { method = 'GET', body, form } = {}) {
+  const headers = { 'X-Telegram-Init-Data': (tg && tg.initData) || 'dev' };   // 'dev' only works when the server runs in DEV_MODE
+  let payload;
+  if (body) { headers['Content-Type'] = 'application/json'; payload = JSON.stringify(body); }
+  let r;
+  try { r = await fetch((window.API_URL || '') + '/api' + path, { method, headers, body: payload }); }
+  catch (e) { const err = new Error('No internet connection. Please check your network and try again.'); err.offline = true; throw err; }
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) { const err = new Error(data.message || (r.status === 404 ? 'Server not found. Check API_URL at the top of index.html.' : 'Request failed')); err.status = r.status; err.data = data; throw err; }
+  return data;
+}
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2600); }
+function haptic(kind) { try { tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred(kind); } catch (e) {} }
+function modal(html) {
+  const el = document.createElement('div'); el.className = 'modal-back';
+  el.innerHTML = `<div class="modal">${html}</div>`;
+  el.addEventListener('click', (e) => { if (e.target === el) el.remove(); });
+  document.body.appendChild(el); return el;
+}
+function confirmBox(title, text, okLabel, okClass = '') {
+  return new Promise((resolve) => {
+    const m = modal(`<h2>${esc(title)}</h2><p class="muted" style="margin:0">${text}</p><button class="btn ${okClass}" id="cb-ok">${esc(okLabel)}</button><button class="btn line" id="cb-no">Cancel</button>`);
+    m.querySelector('#cb-ok').onclick = () => { m.remove(); resolve(true); };
+    m.querySelector('#cb-no').onclick = () => { m.remove(); resolve(false); };
+    m.addEventListener('click', (e) => { if (e.target === m) resolve(false); });
+  });
+}
+const clearTimers = () => { timers.forEach(clearInterval); timers = []; };
+
+/* ============ 2. Telegram + theme ============ */
+function applyTheme() {
+  const pref = localStorage.getItem('theme') || 'auto';
+  const t = pref === 'auto' ? ((tg && tg.colorScheme) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) : pref;
+  document.documentElement.dataset.theme = t;
+  try { tg && tg.setHeaderColor && tg.setHeaderColor('#0d7a45'); tg && tg.setBackgroundColor && tg.setBackgroundColor(t === 'dark' ? '#07130d' : '#f1f7f3'); } catch (e) {}
+}
+function setupTelegram() {
+  if (!tg) return;
+  tg.ready(); tg.expand();
+  try { tg.disableVerticalSwipes && tg.disableVerticalSwipes(); } catch (e) {}
+  tg.onEvent && tg.onEvent('themeChanged', applyTheme);
+  if (tg.BackButton) tg.BackButton.onClick(() => goBack());
+}
+
+/* ---- navigation: kept in memory so it also works where the page cannot change its own address (sandboxed previews) ---- */
+let CUR = null; const STACK = [];
+const getHash = () => (CUR != null ? CUR : (location.hash || '#/home'));
+function go(h, replace) {
+  if (!h || h[0] !== '#') h = '#/home';
+  if (replace && STACK.length) STACK[STACK.length - 1] = h; else if (STACK[STACK.length - 1] !== h) STACK.push(h);
+  CUR = h;
+  try { history.replaceState(null, '', h); } catch (e) { try { location.hash = h; } catch (e2) {} }
+  render();
+}
+function goBack() { if (STACK.length > 1) { STACK.pop(); CUR = STACK[STACK.length - 1]; try { history.replaceState(null, '', CUR); } catch (e) {} render(); } else { try { history.back(); } catch (e) {} } }
+const ROOTS = ['#/home', '#/learn', '#/faq', '#/compete', '#/account'];
+function syncBack() { if (tg && tg.BackButton) (ROOTS.includes(getHash()) ? tg.BackButton.hide() : tg.BackButton.show()); }
+
+/* ============ shell ============ */
+const themeEmoji = () => (document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙');
+function pagehead(title, sub) {
+  return `<div class="pagehead"><div class="grow"><h2>${esc(title)}</h2>${sub ? `<div class="am">${esc(sub)}</div>` : ''}</div><button class="iconbtn2" data-act="theme" aria-label="Switch theme">${themeEmoji()}</button></div>`;
+}
+function shell(inner, { tab = '', title = 'ExitPrep', nav = true, back = false } = {}) {
+  const tabs = [['home', 'Dashboard', ICON.dash], ['learn', 'Questions', ICON.learn], ['faq', 'FAQ', ICON.faq], ['compete', 'Compete', ICON.trophy], ['account', 'Profile', ICON.user]];
+  const bar = back || !nav;
+  $app.innerHTML = `<div class="tricolor"></div>
+    ${bar ? `<header class="topbar"><div class="in">${back ? `<button class="iconbtn" data-act="back" aria-label="Back">‹</button>` : ''}<h1>${esc(title)}</h1><button class="iconbtn" data-act="theme" aria-label="Switch theme">${ICON.moon}</button></div></header>` : ''}
+    <main class="${nav ? '' : 'noNav'}">${inner}</main>
+    ${nav ? `<nav class="bottomnav"><div class="in">${tabs.map(([k, l, i]) => `<a href="#/${k === 'home' ? 'home' : k}" class="${tab === k ? 'on' : ''}">${i}<span>${l}</span></a>`).join('')}</div></nav>` : ''}`;
+  window.scrollTo(0, 0);
+}
+const skeleton = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+function showError(e, retry) {
+  shell(`<div class="card empty"><div class="big">${e.offline ? '📡' : '⚠️'}</div><h2>${e.offline ? 'You are offline' : 'Something went wrong'}</h2><p class="muted">${esc(e.message)}</p><button class="btn" data-act="retry">Try again</button></div>`, { nav: true });
+  acts.retry = () => (retry ? retry() : render());
+}
+function openInTelegram() {
+  const bot = (S.me && S.me.bot) || 'nejashopbot';
+  $app.innerHTML = `<div class="splash"><div class="logo-mark"><i></i><i></i><i></i></div><h1>ExitPrep</h1><p style="max-width:300px;text-align:center;opacity:.85">Please open this app from Telegram so we can recognise your account.</p><a class="btn white" style="width:auto;text-decoration:none" href="https://t.me/${esc(bot)}">Open @${esc(bot)}</a></div>`;
+}
+
+/* ============ data loaders ============ */
+async function loadMe() { S.me = await api('/me'); S.offset = S.me.access.server_time - Date.now(); return S.me; }
+async function ensureCatalog() { if (!S.catalog) S.catalog = await api('/catalog'); return S.catalog; }
+const premium = () => S.me && S.me.access.premium;
+const uniName = () => { const u = S.catalog && S.catalog.universities.find((x) => x.id === S.uni); return u ? u.name : ''; };
+function uniSelect(id = 'uni') {
+  return `<select id="${id}" aria-label="University">${['<option value="0">All universities</option>'].concat(S.catalog.universities.map((u) => `<option value="${u.id}" ${u.id === S.uni ? 'selected' : ''}>${esc(u.name)}</option>`)).join('')}</select>`;
+}
+function bindUni(id = 'uni', after) { const el = document.getElementById(id); if (el) el.onchange = () => { S.uni = Number(el.value); localStorage.setItem('uni', S.uni); if (after) after(); }; }
+
+/* ============ 3. screens ============ */
+function accessCard() {
+  const a = S.me.access, p = S.me.price;
+  if (a.state === 'none') return `<div class="card"><h3>🎁 Start your 48-hour free trial</h3><p class="muted small" style="margin:6px 0 12px">Full access to every exam and explanation. No payment needed. Afterwards ${p.amount} ${p.currency} per year.</p><button class="btn" data-act="trial">Start free trial</button></div>`;
+  if (a.state === 'trial') {
+    const low = a.trial_expires_at - now() < 12 * 3600e3;
+    return `<div class="card ${low ? 'banner-warn' : ''}"><div class="row between"><b>Free trial</b><span class="badge ${low ? 'sample' : 'good'}">${low ? 'ENDING SOON' : 'ACTIVE'}</span></div>
+      <div class="countdown" data-cd="${a.trial_expires_at}">${fmtCd(a.trial_expires_at - now())}</div><div class="muted small">remaining</div>
+      <dl class="kv" style="margin:10px 0"><dt>Started</dt><dd>${fmtDate(a.trial_started_at)}</dd><dt>Expires</dt><dd>${fmtDate(a.trial_expires_at)}</dd></dl>
+      <a class="btn ${low ? '' : 'ghost'}" style="text-decoration:none" href="#/subscribe">Subscribe · ${p.amount} ${p.currency} / year</a></div>`;
+  }
+  if (a.state === 'subscribed') return `<div class="card"><div class="row between"><b>⭐ Premium</b><span class="badge good">ACTIVE</span></div><p class="muted small" style="margin:6px 0 0">Valid until <b>${fmtDay(a.sub_expires_at)}</b> · ${Math.max(0, Math.ceil((a.sub_expires_at - now()) / 86400e3))} days left</p></div>`;
+  return `<div class="card banner-warn"><h3>Your access has ended</h3><p class="small" style="margin:6px 0 12px">Your saved results and progress are safe. Subscribe for ${p.amount} ${p.currency} per year to continue practising.</p><a class="btn" style="text-decoration:none" href="#/subscribe">Subscribe · ${p.amount} ${p.currency}</a></div>`;
+}
+
+function searchHits(q) {
+  q = q.trim().toLowerCase(); if (q.length < 2) return [];
+  const out = [];
+  for (const c of S.catalog.categories) for (const d of c.departments) {
+    const subj = d.subjects.find((s) => s.toLowerCase().includes(q));
+    if (d.name.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || subj) out.push({ d, c, subj: subj && !d.name.toLowerCase().includes(q) ? subj : '' });
+  }
+  return out.slice(0, 12);
+}
+function hitsHtml(hits, q) {
+  if (!q || q.trim().length < 2) return '';
+  if (!hits.length) return `<div class="card empty"><div class="big">🔍</div><b>No results for “${esc(q)}”</b><span class="muted small">Try a department name such as “Computer Science”.</span></div>`;
+  return `<div class="card">${hits.map((h) => `<a class="list-item" href="#/dept/${h.d.id}"><span style="font-size:22px">${esc(h.c.icon)}</span><div class="grow"><b>${esc(h.d.name)}</b><div class="muted small">${esc(h.c.name)}${h.subj ? ' · ' + esc(h.subj) : ''}</div></div>${ICON.chev}</a>`).join('')}</div>`;
+}
+
+function tile({ href, icon, tag, title, desc, gold, intent }) {
+  return `<a class="tile ${gold ? 'gold' : ''}" href="${href}" ${intent ? `data-intent="${intent}"` : ''}><div class="top"><div class="ic">${icon}</div><span class="tag">${tag}</span></div><b>${title}</b><span class="desc">${desc}</span><span class="open">Open →</span></a>`;
+}
+async function home() {
+  shell(skeleton, { tab: 'home' });
+  const [stats] = await Promise.all([api('/stats'), loadMe(), ensureCatalog()]);
+  const o = stats.overall, last = S.me.last_department, com = S.me.community;
+  shell(`
+    <a class="studying" href="${last ? '#/dept/' + last.id : '#/learn'}"><div class="ico">🎓</div><div class="grow"><div class="eyebrow">${last ? 'Studying' : 'Get started'}</div><h2>${esc(last ? last.name : 'Choose your department')}</h2></div><button class="iconbtn2" data-act="theme" aria-label="Switch theme">${themeEmoji()}</button></a>
+    <div class="muted" style="margin:-4px 2px 0">Selam, <b style="color:var(--text)">${esc(S.me.user.name)}</b> 👋</div>
+    ${accessCard()}
+    ${S.me.active_attempt ? `<a class="card row" style="text-decoration:none;color:inherit" href="#/exam/${S.me.active_attempt.id}"><span style="font-size:26px">▶️</span><div class="grow"><b>Continue your ${esc(MODES[S.me.active_attempt.mode][0].toLowerCase())}</b><div class="muted small">Your answers were saved automatically.</div></div>${ICON.chev}</a>` : ''}
+    <div class="gap"><label class="f">University${uniSelect()}</label>
+      <div class="search">${ICON.search}<input type="search" id="q" placeholder="Search faculty or department" autocomplete="off"></div><div id="hits"></div></div>
+    <div class="tiles">
+      ${tile({ href: '#/learn', intent: 'past', icon: '📄', tag: 'EXAM', title: 'Past-year exams', desc: 'Pick a department and a year' })}
+      ${tile({ href: '#/learn', intent: 'practice', icon: '🎯', tag: 'SOLVE', title: 'Practice questions', desc: 'Instant explanations' })}
+      ${tile({ href: '#/learn', intent: 'mock', icon: '⏱️', tag: 'TIMED', title: 'Timed mock exam', desc: 'Real exam pressure' })}
+      ${tile({ href: '#/compete', icon: '🏆', tag: 'COMPETE', title: 'Weekly leaderboard', desc: 'See how you rank', gold: true })}
+      ${tile({ href: '#/progress', icon: '📈', tag: 'TRACK', title: 'My progress', desc: o.attempts ? `${o.attempts} exams · ${o.pct}% average` : 'Scores and weak topics' })}
+      ${tile({ href: '#/faq', icon: '💡', tag: 'PREPARE', title: 'Exam tips', desc: 'FAQ and strategy' })}
+      ${tile({ href: '#/saved', icon: '🔖', tag: 'SAVED', title: 'Saved questions', desc: 'Your bookmarks' })}
+      ${tile({ href: '#/mistakes', icon: '♻️', tag: 'REVIEW', title: 'Review mistakes', desc: 'Learn from errors' })}
+    </div>
+    ${communityHtml(com)}
+    <p class="muted small center">${S.me.price.amount} ${S.me.price.currency} / year after the free trial</p>`, { tab: 'home' });
+  bindUni();
+  const q = document.getElementById('q'), hits = document.getElementById('hits');
+  q.oninput = () => { hits.innerHTML = hitsHtml(searchHits(q.value), q.value); };
+  document.querySelectorAll('[data-intent]').forEach((el) => el.addEventListener('click', () => { S.intent = el.dataset.intent; }));
+}
+function communityHtml(com) {
+  if (!com || (!com.channel && !com.support)) return '';
+  return `<div class="sectionlabel">Community</div><div class="tiles">${com.channel ? `<a class="commbtn" href="https://t.me/${esc(com.channel)}">📣 Telegram Channel</a>` : ''}${com.support ? `<a class="commbtn" href="https://t.me/${esc(com.support)}">➤ Support Chat</a>` : ''}</div>`;
+}
+
+async function learn() {
+  shell(skeleton, { tab: 'learn', title: 'Faculties' });
+  await Promise.all([ensureCatalog(), loadMe()]);
+  const draw = (filter = '') => {
+    const f = filter.trim().toLowerCase();
+    const cats = S.catalog.categories.map((c) => ({ ...c, departments: c.departments.filter((d) => !f || d.name.toLowerCase().includes(f) || c.name.toLowerCase().includes(f) || d.subjects.some((s) => s.toLowerCase().includes(f))) })).filter((c) => c.departments.length);
+    document.getElementById('cats').innerHTML = cats.length ? cats.map((c) => `<details class="cat" ${f ? 'open' : ''}><summary><span style="font-size:24px">${esc(c.icon)}</span><span>${esc(c.name)}</span><span class="badge">${c.departments.length}</span>${ICON.chev}</summary>
+      ${c.departments.map((d) => `<button class="dept" data-go="#/dept/${d.id}"><div class="grow"><b>${esc(d.name)}</b></div>${d.q_count ? `<span class="n">${d.q_count} questions</span>` : '<span class="badge sample">Coming soon</span>'}</button>`).join('')}</details>`).join('')
+      : `<div class="card empty"><div class="big">🔍</div><b>No department found</b></div>`;
+  };
+  shell(`${pagehead('Questions', 'Choose a faculty, then a department')}<div class="seg" id="modeseg">${Object.entries(MODES).map(([k, v]) => `<button data-mode="${k}" class="${S.intent === k ? 'on' : ''}">${v[0]}</button>`).join('')}</div>
+    <label class="f">University${uniSelect()}</label>
+    <div class="search">${ICON.search}<input type="search" id="q" placeholder="Search faculty or department" autocomplete="off"></div>
+    <div class="gap" id="cats"></div>`, { tab: 'learn', title: 'Faculties' });
+  draw(); bindUni();
+  document.getElementById('q').oninput = (e) => draw(e.target.value);
+  document.querySelectorAll('#modeseg button').forEach((b) => (b.onclick = () => { S.intent = b.dataset.mode; document.querySelectorAll('#modeseg button').forEach((x) => x.classList.toggle('on', x === b)); }));
+}
+
+async function dept(id) {
+  shell(skeleton, { title: 'Loading…', back: true, nav: true, tab: 'learn' });
+  await Promise.all([ensureCatalog(), loadMe()]);
+  const data = await api(`/departments/${id}/exams?university=${S.uni}`);
+  const sel = { mode: S.intent, year: null, subject: null, count: 10 };
+  if (sel.mode === 'past' && data.years.length) sel.year = data.years[0].year;
+  const hasSample = data.years.some((y) => y.sample);
+  const yr = () => data.years.find((y) => y.year === sel.year);
+  const subjectsShown = () => (sel.year ? yr().subjects : data.subjects);
+  const avail = () => { if (sel.year) { const y = yr(); return sel.subject ? ((y.subjects.find((s) => s.id === sel.subject) || {}).count || 0) : y.total; } return sel.subject ? ((data.subjects.find((s) => s.id === sel.subject) || {}).count || 0) : data.total; };
+  const draw = () => {
+    if (sel.mode === 'past' && !sel.year && data.years.length) sel.year = data.years[0].year;
+    if (sel.subject && !subjectsShown().some((s) => s.id === sel.subject)) sel.subject = null;
+    const n = avail(), eff = sel.mode === 'past' ? n : Math.min(sel.count, n);
+    document.getElementById('dbody').innerHTML = `
+      <div class="seg" id="modeseg">${Object.entries(MODES).map(([k, v]) => `<button data-mode="${k}" class="${sel.mode === k ? 'on' : ''}">${v[0]}</button>`).join('')}</div>
+      <p class="muted small" style="margin:-4px 2px 0">${MODES[sel.mode][1]}</p>
+      <div class="card gap"><h3>Exam year</h3><div class="chips">${sel.mode === 'past' ? '' : `<button class="chip ${!sel.year ? 'on' : ''}" data-year="0">All years</button>`}
+        ${data.years.map((y) => `<button class="chip ${sel.year === y.year ? 'on' : ''}" data-year="${y.year}">${y.year}</button>`).join('')}</div>
+        ${!data.years.length ? '<p class="muted small" style="margin:0">No dated exam years are available for this department yet.</p>' : ''}
+        ${sel.mode === 'past' ? '' : `<h3>Number of questions</h3><div class="chips">${[10, 20, 50, 100].map((c) => `<button class="chip ${sel.count === c ? 'on' : ''}" data-count="${c}">${c === 100 ? 'Max' : c}</button>`).join('')}</div>`}
+      </div>
+      ${hasSample ? '<div class="notice"><b>Sample content.</b> The questions shown here are demonstration items written for this app. They are <b>not</b> official exam papers.</div>' : ''}
+      <div class="card row between"><div><b>${n} question${n === 1 ? '' : 's'} available</b><div class="muted small">${eff ? `You will get ${eff}${sel.mode === 'mock' ? ` · ${eff} minute${eff === 1 ? '' : 's'} total` : ''}` : 'Nothing published for this selection yet'}</div></div></div>
+      <button class="btn" id="start" ${n ? '' : 'disabled'}>${premium() ? `Start ${MODES[sel.mode][0].toLowerCase()}` : 'Subscribe to start'}</button>
+      ${data.documents.length ? `<div class="card"><h3 style="margin-bottom:6px">Past-paper PDFs</h3>${data.documents.map((d) => `<div class="list-item"><span style="font-size:22px">📕</span><div class="grow"><b>${esc(d.title)}</b><div class="muted small">${d.year || 'General'} · ${(d.size / 1048576).toFixed(1)} MB</div></div><button class="btn sm ghost" data-doc="${d.id}">Open</button></div>`).join('')}</div>` : ''}`;
+    document.querySelectorAll('#dbody [data-mode]').forEach((b) => (b.onclick = () => { sel.mode = b.dataset.mode; S.intent = sel.mode; draw(); }));
+    document.querySelectorAll('#dbody [data-year]').forEach((b) => (b.onclick = () => { sel.year = Number(b.dataset.year) || null; draw(); }));
+    document.querySelectorAll('#dbody [data-subject]').forEach((b) => (b.onclick = () => { sel.subject = Number(b.dataset.subject) || null; draw(); }));
+    document.querySelectorAll('#dbody [data-count]').forEach((b) => (b.onclick = () => { sel.count = Number(b.dataset.count); draw(); }));
+    document.querySelectorAll('#dbody [data-doc]').forEach((b) => (b.onclick = async () => {
+      try { const r = await api(`/documents/${b.dataset.doc}/link`); tg && tg.openLink ? tg.openLink(r.url) : window.open(r.url, '_blank'); }
+      catch (e) { if (e.status === 402) { toast('Subscribe to open exam PDFs'); go('#/subscribe'); } else toast(e.message); }
+    }));
+    document.getElementById('start').onclick = async (ev) => {
+      if (!premium()) { go('#/subscribe'); return; }
+      ev.target.disabled = true;
+      try { const r = await api('/attempts/start', { method: 'POST', body: { department_id: Number(id), subject_id: sel.subject, year: sel.year, university_id: S.uni, mode: sel.mode, count: sel.count } }); go('#/exam/' + r.id); }
+      catch (e) { ev.target.disabled = false; if (e.status === 402) { await loadMe(); go('#/subscribe'); } toast(e.message); }
+    };
+  };
+  shell(`<section class="card hero"><div class="muted small">${esc(data.department.category)}</div><h2>${esc(data.department.name)}</h2><div class="muted small" style="margin-top:4px">🎓 ${esc(uniName() || 'All universities')}</div></section><div class="gap" id="dbody"></div>`, { tab: 'learn', title: 'Exam setup', back: true });
+  draw();
+}
+
+/* ---------- exam ---------- */
+async function exam(id) {
+  shell(skeleton, { nav: false, title: 'Exam' });
+  const d = await api('/attempts/' + id);
+  if (d.submitted) { go('#/result/' + id, true); return; }
+  const st = { mode: d.mode, qs: d.questions, idx: 0, ans: {}, marks: new Set(), fb: {}, savedQ: new Set(), left: d.time_left, t0: performance.now(), chain: Promise.resolve(), saving: '' };
+  Object.entries(d.answers).forEach(([qid, a]) => { st.ans[qid] = a.selected; if (a.marked) st.marks.add(+qid); if (a.feedback) st.fb[qid] = a.feedback; });
+  const firstOpen = st.qs.findIndex((q) => !(st.ans[q.id] || []).length); st.idx = Math.max(0, firstOpen);
+  try { tg && tg.enableClosingConfirmation && tg.enableClosingConfirmation(); } catch (e) {}
+  const cur = () => st.qs[st.idx];
+  const remaining = () => st.left == null ? null : st.left - Math.floor((performance.now() - st.t0) / 1000);
+  const answered = () => st.qs.filter((q) => (st.ans[q.id] || []).length).length;
+
+  const draw = () => {
+    const q = cur(), sel = st.ans[q.id] || [], fb = st.fb[q.id], practice = st.mode === 'practice', multi = q.type === 'multi';
+    const locked = practice && !!fb;
+    const choiceHtml = q.choices.map((c, i) => {
+      let k = '';
+      if (fb) { const right = fb.correct_ids.includes(c.id), mine = sel.includes(c.id); k = right ? 'right' : mine ? 'wrong' : ''; } else if (sel.includes(c.id)) k = 'sel';
+      return `<button class="choice ${multi ? 'multi' : ''} ${k}" data-c="${c.id}" ${locked ? 'disabled' : ''}><span class="k">${k === 'right' ? '✓' : k === 'wrong' ? '✕' : LETTERS[i]}</span><span>${esc(c.text)}</span></button>`;
+    }).join('');
+    let fbHtml = '';
+    if (fb) {
+      const wrongs = fb.choices.filter((c) => !c.is_correct);
+      fbHtml = `<div class="feedback ${fb.correct ? 'ok' : 'no'}" id="fb"><h3>${fb.correct ? '✅ Correct! Well done.' : '❌ Not quite.'}</h3>
+        <div class="blk"><span class="lbl">Correct answer</span>${fb.choices.filter((c) => c.is_correct).map((c) => `${LETTERS[fb.choices.indexOf(c)]}. ${esc(c.text)}`).join('<br>')}</div>
+        ${fb.explanation ? `<div class="blk"><span class="lbl">Explanation</span>${esc(fb.explanation)}</div>` : ''}
+        ${fb.why_wrong ? `<div class="blk"><span class="lbl">Why the other choices are wrong</span>${esc(fb.why_wrong)}</div>` : ''}
+        ${fb.formula ? `<div class="blk"><span class="lbl">Formula / concept</span><span class="formula">${esc(fb.formula)}</span></div>` : ''}
+        ${fb.tip ? `<div class="blk"><span class="lbl">💡 Memory tip</span>${esc(fb.tip)}</div>` : ''}
+        <button class="btn sm line" data-act="q-save">${ICON.mark} ${st.savedQ.has(q.id) ? 'Saved ✓' : 'Save this question'}</button></div>`;
+    }
+    const last = st.idx === st.qs.length - 1;
+    const needCheck = practice && multi && !fb;
+    const pct = Math.round(((st.idx + (fb ? 1 : 0)) / st.qs.length) * 100);
+    $app.innerHTML = `<div class="tricolor"></div>
+      <header class="examtop"><div class="in"><div class="row"><button class="iconbtn" style="background:var(--brand-soft);color:var(--brand);border:0;width:38px;height:38px;border-radius:12px" data-act="q-exit" aria-label="Leave">${ICON.x}</button>
+        <b class="grow">Question ${st.idx + 1} <span class="muted">/ ${st.qs.length}</span></b><span class="small muted" id="saving">${st.saving}</span>
+        ${st.left != null ? `<span class="timer" id="timer">${fmtCd((remaining() || 0) * 1000)}</span>` : ''}
+        <button class="iconbtn" style="background:var(--brand-soft);color:var(--brand);border:0;width:38px;height:38px;border-radius:12px" data-act="q-nav" aria-label="Question list">${ICON.grid}</button></div>
+        <div class="bar"><i style="width:${pct}%"></i></div></div></header>
+      <main class="noNav"><div class="card gap">
+        <div class="chips">${q.topic ? `<span class="badge">${esc(q.topic)}</span>` : ''}${q.year ? `<span class="badge">${q.year}</span>` : ''}${q.source_type === 'sample' ? '<span class="badge sample">SAMPLE</span>' : ''}</div>
+        <div class="qtext">${esc(q.text)}</div>${q.code ? `<pre class="codeblk">${esc(q.code)}</pre>` : ''}${multi ? '<div class="small muted">Select all that apply</div>' : ''}
+        <div class="gap">${choiceHtml}</div>
+        ${practice ? '' : `<button class="btn sm ${st.marks.has(q.id) ? '' : 'line'}" style="width:fit-content" data-act="q-mark">${ICON.flag} ${st.marks.has(q.id) ? 'Marked for review' : 'Mark for review'}</button>`}
+      </div>${fbHtml}</main>
+      <div class="footbar"><div class="in">
+        <button class="btn line" style="flex:0 0 34%" data-act="q-prev" ${st.idx === 0 ? 'disabled' : ''}>‹ Previous</button>
+        ${needCheck ? `<button class="btn good" data-act="q-check" ${sel.length ? '' : 'disabled'}>Check answer</button>`
+          : last ? `<button class="btn good" data-act="q-submit">Finish & submit</button>` : `<button class="btn" data-act="q-next">${practice && !fb ? 'Skip' : 'Next'} ›</button>`}
+      </div></div>`;
+    $app.querySelectorAll('.choice').forEach((b) => (b.onclick = () => pick(Number(b.dataset.c))));
+    if (fb && st.justChecked) { st.justChecked = false; document.getElementById('fb').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  };
+  const setSaving = (t) => { st.saving = t; const el = document.getElementById('saving'); if (el) el.textContent = t; };
+  const queueSave = (qid, selected) => {
+    setSaving('Saving…');
+    st.chain = st.chain.then(() => api(`/attempts/${id}/answer`, { method: 'POST', body: { question_id: qid, selected } }))
+      .then(() => setSaving('Saved ✓')).catch((e) => { setSaving('⚠ Not saved'); if (e.data && e.data.error === 'time_over') autoSubmit(); else toast('Could not save — check your connection'); });
+  };
+  const check = async () => {
+    const q = cur(), sel = st.ans[q.id];
+    try { const r = await api(`/attempts/${id}/answer`, { method: 'POST', body: { question_id: q.id, selected: sel } }); st.fb[q.id] = r.feedback; st.ans[q.id] = r.selected; st.justChecked = true; haptic(r.feedback.correct ? 'success' : 'error'); draw(); }
+    catch (e) { toast(e.message); }
+  };
+  const pick = (cid) => {
+    const q = cur(); if (st.mode === 'practice' && st.fb[q.id]) return;
+    let sel = st.ans[q.id] || [];
+    sel = q.type === 'multi' ? (sel.includes(cid) ? sel.filter((x) => x !== cid) : [...sel, cid]) : [cid];
+    st.ans[q.id] = sel;
+    if (st.mode === 'practice') { draw(); if (q.type !== 'multi') check(); } else { draw(); queueSave(q.id, sel); }
+  };
+  const submit = async () => {
+    clearTimers();
+    try { await st.chain; await api(`/attempts/${id}/submit`, { method: 'POST' }); try { tg && tg.disableClosingConfirmation && tg.disableClosingConfirmation(); } catch (e) {} go('#/result/' + id, true); }
+    catch (e) { toast(e.message); }
+  };
+  const autoSubmit = () => { toast("Time's up! Submitting your exam…"); submit(); };
+  acts['q-prev'] = () => { st.idx = Math.max(0, st.idx - 1); draw(); window.scrollTo(0, 0); };
+  acts['q-next'] = () => { st.idx = Math.min(st.qs.length - 1, st.idx + 1); draw(); window.scrollTo(0, 0); };
+  acts['q-check'] = check;
+  acts['q-mark'] = () => { const q = cur(), on = !st.marks.has(q.id); on ? st.marks.add(q.id) : st.marks.delete(q.id); draw(); st.chain = st.chain.then(() => api(`/attempts/${id}/mark`, { method: 'POST', body: { question_id: q.id, marked: on } })).catch(() => {}); };
+  acts['q-save'] = async () => { try { const r = await api('/saved/' + cur().id, { method: 'POST' }); r.saved ? st.savedQ.add(cur().id) : st.savedQ.delete(cur().id); toast(r.saved ? 'Saved to your bookmarks' : 'Removed from bookmarks'); draw(); document.getElementById('fb') && document.getElementById('fb').scrollIntoView({ block: 'center' }); } catch (e) { toast(e.message); } };
+  acts['q-exit'] = async () => { if (await confirmBox('Leave this exam?', 'Your answers are saved automatically. You can continue from the Home screen' + (st.left != null ? ' while the timer is still running.' : '.'), 'Leave', 'line')) { clearTimers(); try { tg && tg.disableClosingConfirmation && tg.disableClosingConfirmation(); } catch (e) {} go('#/home'); } };
+  acts['q-nav'] = () => {
+    const m = modal(`<div class="row between"><h2>Questions</h2><span class="muted small">${answered()}/${st.qs.length} answered</span></div>
+      <div class="navgrid">${st.qs.map((q, i) => `<button class="${(st.ans[q.id] || []).length ? 'ans' : ''} ${st.marks.has(q.id) ? 'mk' : ''} ${i === st.idx ? 'cur' : ''}" data-i="${i}">${i + 1}</button>`).join('')}</div>
+      <div class="small muted">Blue = answered · Orange outline = marked for review</div><button class="btn good" id="n-sub">Finish & submit</button>`);
+    m.querySelectorAll('[data-i]').forEach((b) => (b.onclick = () => { st.idx = Number(b.dataset.i); m.remove(); draw(); }));
+    m.querySelector('#n-sub').onclick = () => { m.remove(); acts['q-submit'](); };
+  };
+  acts['q-submit'] = async () => {
+    const un = st.qs.length - answered();
+    if (await confirmBox('Submit exam?', `${un ? `<b>${un} unanswered</b> question${un > 1 ? 's' : ''} will count as incorrect. ` : 'You answered every question. '}${st.marks.size ? `${st.marks.size} marked for review. ` : ''}You cannot change answers after submitting.`, 'Submit now', 'good')) submit();
+  };
+  draw();
+  if (st.left != null) {
+    if (remaining() <= 0) return autoSubmit();
+    timers.push(setInterval(() => { const r = remaining(), t = document.getElementById('timer'); if (t) { t.textContent = fmtCd(Math.max(0, r) * 1000); t.classList.toggle('low', r <= 60); } if (r <= 0) { clearTimers(); autoSubmit(); } }, 1000));
+  }
+}
+
+/* ---------- review card (used by results, saved, mistakes) ---------- */
+function reviewCard(q, i, neutral) {
+  const sol = (q.choices || []).map((c, k) => {
+    const mine = (q.selected || []).includes(c.id);
+    const cls2 = c.is_correct ? 'right' : mine ? 'wrong' : '';
+    return `<div class="choice ${q.type === 'multi' ? 'multi' : ''} ${cls2}" style="cursor:default"><span class="k">${c.is_correct ? '✓' : mine ? '✕' : LETTERS[k]}</span><span>${esc(c.text)}${mine ? ' <span class="badge">Your answer</span>' : ''}</span></div>`;
+  }).join('');
+  return `<details class="rev"><summary><span class="dot ${neutral ? '' : q.is_correct ? 'ok' : 'no'}" ${neutral ? 'style="background:var(--brand)"' : ''}>${neutral ? '?' : q.is_correct ? '✓' : '✕'}</span><span class="grow">${i != null ? i + 1 + '. ' : ''}${esc(q.text.length > 110 ? q.text.slice(0, 110) + '…' : q.text)}</span></summary>
+    <div class="gap" style="margin-top:12px"><div class="chips">${q.topic ? `<span class="badge">${esc(q.topic)}</span>` : ''}${q.source_type === 'sample' ? '<span class="badge sample">SAMPLE</span>' : ''}${q.marked ? '<span class="badge sample">Marked</span>' : ''}</div>
+    <div class="qtext" style="font-size:16px">${esc(q.text)}</div>${q.code ? `<pre class="codeblk">${esc(q.code)}</pre>` : ''}${sol}
+    ${q.explanation ? `<div class="feedback ok" style="background:var(--brand-soft)"><div class="blk"><span class="lbl">Explanation</span>${esc(q.explanation)}</div>${q.why_wrong ? `<div class="blk"><span class="lbl">Why the other choices are wrong</span>${esc(q.why_wrong)}</div>` : ''}${q.formula ? `<div class="blk"><span class="lbl">Formula / concept</span><span class="formula">${esc(q.formula)}</span></div>` : ''}${q.tip ? `<div class="blk"><span class="lbl">💡 Memory tip</span>${esc(q.tip)}</div>` : ''}</div>` : ''}
+    <button class="btn sm line" style="width:fit-content" data-save="${q.id}">${ICON.mark} <span>${q.saved ? 'Saved ✓' : 'Save question'}</span></button></div></details>`;
+}
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-save]'); if (!b) return;
+  try { const r = await api('/saved/' + b.dataset.save, { method: 'POST' }); b.querySelector('span').textContent = r.saved ? 'Saved ✓' : 'Save question'; toast(r.saved ? 'Saved' : 'Removed'); } catch (err) { toast(err.message); }
+});
+
+async function result(id) {
+  shell(skeleton, { title: 'Results', back: true, tab: 'home' });
+  const d = await api('/attempts/' + id);
+  if (!d.submitted) { go('#/exam/' + id, true); return; }
+  const a = d.attempt, C = 2 * Math.PI * 62, off = C * (1 - a.pct / 100), col = a.pct >= 70 ? 'var(--good)' : a.pct >= 50 ? '#e69500' : 'var(--bad)';
+  const msg = a.pct >= 80 ? 'Excellent work! 🌟' : a.pct >= 60 ? 'Good job — keep going! 💪' : a.pct >= 40 ? 'You are getting there. Review the explanations below.' : 'Do not give up — study the explanations and try again.';
+  const draw = (f) => { document.getElementById('revlist').innerHTML = d.review.map((q, i) => ({ q, i })).filter((x) => f === 'all' || (f === 'wrong' ? !x.q.is_correct : x.q.marked)).map((x) => reviewCard(x.q, x.i)).join('') || '<div class="empty muted">Nothing here.</div>'; };
+  shell(`<section class="card hero center gap"><div class="muted small">${esc(MODES[a.mode][0])}${a.year ? ' · ' + a.year : ''}</div>
+      <div class="ring"><svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="62" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="12"/><circle cx="70" cy="70" r="62" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><div class="t"><div><b>${a.pct}%</b><br><span style="color:#fff;opacity:.7">score</span></div></div></div>
+      <div>${msg}</div></section>
+    <div class="statrow"><div class="card stat"><b>${a.total}</b><span>Questions</span></div><div class="card stat"><b style="color:var(--good)">${a.correct}</b><span>Correct</span></div><div class="card stat"><b style="color:var(--bad)">${a.total - a.correct}</b><span>Incorrect</span></div></div>
+    <div class="card row between"><span class="muted">⏱ Time taken</span><b>${fmtDur(a.duration_sec)}</b></div>
+
+    <div class="card"><h3 style="margin-bottom:10px">Review with explanations</h3><div class="seg" id="rf"><button data-f="all" class="on">All</button><button data-f="wrong">Incorrect</button><button data-f="marked">Marked</button></div><div id="revlist" style="margin-top:8px"></div></div>
+    <a class="btn" style="text-decoration:none" href="#/learn">Practice more</a><a class="btn line" style="text-decoration:none" href="#/progress">View my progress</a>`, { tab: 'home', title: 'Results', back: true });
+  draw('all');
+  document.querySelectorAll('#rf button').forEach((b) => (b.onclick = () => { document.querySelectorAll('#rf button').forEach((x) => x.classList.toggle('on', x === b)); draw(b.dataset.f); }));
+  haptic('success');
+}
+
+function trendSvg(pts) {
+  if (pts.length < 2) return '<p class="muted small center" style="margin:16px 0">Complete at least two exams to see your trend.</p>';
+  const W = 320, H = 140, P = 22, x = (i) => P + (i * (W - 2 * P)) / (pts.length - 1), y = (v) => H - P - (v / 100) * (H - 2 * P);
+  const path = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(p.pct).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Score trend">${[0, 50, 100].map((v) => `<line x1="${P}" x2="${W - P}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="2" y="${y(v) + 4}" font-size="10" fill="var(--muted)">${v}</text>`).join('')}
+    <path d="${path}" fill="none" stroke="var(--brand)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.pct)}" r="4.5" fill="var(--card)" stroke="var(--brand)" stroke-width="2.5"/>`).join('')}</svg>`;
+}
+async function progress() {
+  shell(skeleton, { tab: 'home', title: 'My progress', back: true });
+  const [s, h] = await Promise.all([api('/stats'), api('/attempts')]);
+  const o = s.overall;
+  if (!o.attempts) return shell(`<div class="card empty"><div class="big">📈</div><h2>No results yet</h2><p class="muted">Finish a practice set or an exam and your analytics will appear here.</p><a class="btn" style="text-decoration:none" href="#/learn">Start practising</a></div>`, { tab: 'home', title: 'My progress', back: true });
+  shell(`<div class="statrow"><div class="card stat"><b>${o.attempts}</b><span>Exams</span></div><div class="card stat"><b>${o.pct}%</b><span>Average</span></div><div class="card stat"><b>${o.total}</b><span>Answered</span></div></div>
+    <div class="card"><h3>Score trend</h3>${trendSvg(s.trend)}</div>
+
+    <div class="card gap"><h3>Weak topics</h3>${s.weak_topics.length ? s.weak_topics.map((x) => `<div class="row between"><span>${esc(x.name)}</span><span class="badge ${x.pct < 50 ? 'bad' : 'sample'}">${x.pct}%</span></div>`).join('') : '<p class="muted small" style="margin:0">No weak topics — great job!</p>'}<a class="btn ghost" style="text-decoration:none" href="#/mistakes">Review my mistakes</a></div>
+    <div class="card"><h3 style="margin-bottom:6px">History</h3>${h.attempts.map((x) => `<a class="list-item" href="#/result/${x.id}"><div class="grow"><b>${esc(x.department)}</b><div class="muted small">${esc(MODES[x.mode][0])}${x.year ? ' · ' + x.year : ''}${x.subject ? ' · ' + esc(x.subject) : ''} · ${fmtDay(x.submitted_at)}</div></div><span class="badge ${x.pct >= 60 ? 'good' : x.pct >= 40 ? 'sample' : 'bad'}">${x.pct}%</span></a>`).join('')}</div>`, { tab: 'home', title: 'My progress', back: true });
+}
+
+async function reviewList(kind) {
+  const title = kind === 'saved' ? 'Saved questions' : 'Review mistakes';
+  shell(skeleton, { tab: 'home', title, back: true });
+  const d = await api('/' + kind);
+  shell(d.items.length ? `<div class="card">${d.items.map((q) => reviewCard(q, null, true)).join('')}</div>` : `<div class="card empty"><div class="big">${kind === 'saved' ? '🔖' : '🎉'}</div><h2>${kind === 'saved' ? 'No saved questions' : 'No mistakes to review'}</h2><p class="muted">${kind === 'saved' ? 'Tap “Save question” on any explanation to keep it here.' : 'Questions you answer incorrectly will appear here so you can learn from them.'}</p><a class="btn" style="text-decoration:none" href="#/learn">Practice</a></div>`, { tab: 'home', title, back: true });
+}
+
+/* ---------- subscription ---------- */
+const PAY_STATUS = { created: ['Waiting for your transaction ID', 'sample'], submitted: ['Awaiting verification', 'sample'], confirmed: ['Confirmed', 'good'], rejected: ['Not verified', 'bad'] };
+async function subscribe() {
+  shell(skeleton, { title: 'Subscription', back: true, tab: 'account' });
+  await loadMe();
+  const { access: a, price: p, providers } = S.me;
+  const { payments } = await api('/payments');
+  const pending = payments.find((x) => x.status === 'submitted');
+  shell(`<section class="card hero gap"><div class="muted">Annual premium</div><div class="price">${p.amount} <small>${p.currency} / year</small></div>
+      <ul class="ticks"><li>All past-year exams and timed mock exams</li><li>Instant explanations for every question</li><li>Detailed analytics and weak-topic tracking</li><li>Saved questions and mistake review</li><li>Past-paper PDFs for your department</li></ul></section>
+    ${accessCard()}
+    ${pending ? `<div class="notice">⏳ Your payment <span class="copy">${esc(pending.reference)}</span> is waiting for verification. Your subscription activates as soon as an administrator confirms it.</div>` : ''}
+    <div class="card gap" id="paybox"><h3>${a.state === 'subscribed' ? 'Renew for another year' : 'Pay by mobile money / bank'}</h3>
+      ${providers.length ? `<div class="chips">${providers.map((x) => `<button class="chip" data-prov="${x.id}">${esc(x.name)}</button>`).join('')}</div><div id="payflow" class="gap"><p class="muted small" style="margin:0">Choose a payment method to see the instructions. We never charge you automatically.</p></div>`
+        : `<div class="notice">Online payment is not set up yet. ${S.me.support ? `Please contact <a href="https://t.me/${esc(S.me.support)}">@${esc(S.me.support)}</a>.` : 'Please contact the administrator.'}</div>`}</div>
+    ${S.me.standalone ? `<div class="card gap"><h3>Have an activation code?</h3><p class="muted small" style="margin:0">After your payment is checked, the administrator sends you a code. Enter it here to unlock ${p.days} days of premium.</p><label class="f">Activation code<input type="text" id="actcode" placeholder="XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off"></label><button class="btn" id="act-go">Activate</button></div>` : ''}
+    ${payments.length ? `<div class="card"><h3 style="margin-bottom:6px">Your payments</h3>${payments.map((x) => `<div class="list-item"><div class="grow"><b>${esc(x.reference)}</b><div class="muted small">${esc(x.provider)} · ${x.amount} ${x.currency} · ${fmtDay(x.created_at)}</div>${x.reject_reason ? `<div class="small" style="margin-top:4px">Reason: ${esc(x.reject_reason)}. Pay again with a clear screenshot.</div>` : ''}</div><span class="badge ${PAY_STATUS[x.status][1]}">${PAY_STATUS[x.status][0]}</span></div>`).join('')}</div>` : ''}`, { title: 'Subscription', back: true, tab: 'account' });
+  const ag = document.getElementById('act-go');
+  if (ag) ag.onclick = async () => { ag.disabled = true; try { await api('/payments/activate', { method: 'POST', body: { code: document.getElementById('actcode').value } }); toast('Premium activated'); await loadMe(); subscribe(); } catch (err) { ag.disabled = false; toast(err.message); } };
+  document.querySelectorAll('[data-prov]').forEach((b) => (b.onclick = async () => {
+    document.querySelectorAll('[data-prov]').forEach((x) => x.classList.toggle('on', x === b));
+    const box = document.getElementById('payflow'); box.innerHTML = '<div class="skel"></div>';
+    try {
+      const r = await api('/payments/create', { method: 'POST', body: { provider: b.dataset.prov } });
+      box.innerHTML = `<div class="blk" style="background:var(--brand-soft);border-radius:14px;padding:14px"><b>Your reference</b><div class="row" style="margin-top:6px"><span class="copy grow">${esc(r.payment.reference)}</span><button class="btn sm ghost" data-copy="${esc(r.payment.reference)}">Copy</button></div></div>
+        <ol style="padding-left:20px;margin:0;display:grid;gap:8px">${r.instructions.map((l) => `<li>${esc(l)}</li>`).join('')}</ol>
+        <label class="f">Transaction ID from your receipt<input type="text" id="txn" placeholder="e.g. DK12AB34CD" autocapitalize="characters" autocomplete="off"></label>
+        <label class="f">Screenshot of your receipt (JPG or PNG, up to 2 MB)<input type="file" id="rcpt" accept="image/jpeg,image/png"></label>
+        <img id="rcpt-prev" alt="Receipt preview" style="display:none;max-width:100%;border-radius:12px">
+        <button class="btn" id="txn-go">I have paid — submit for verification</button>
+        <p class="muted small" style="margin:0">An administrator compares your screenshot with the transaction ID. Nothing is activated until the payment is approved.</p>`;
+      box.querySelector('[data-copy]').onclick = (e) => { navigator.clipboard ? navigator.clipboard.writeText(e.target.dataset.copy).then(() => toast('Copied')) : toast(e.target.dataset.copy); };
+      const rf = box.querySelector('#rcpt');
+      rf.onchange = () => { const f = rf.files[0], img = box.querySelector('#rcpt-prev'); if (!f) { img.style.display = 'none'; return; } img.src = URL.createObjectURL(f); img.style.display = 'block'; };
+      box.querySelector('#txn-go').onclick = async (e) => {
+        const txn = box.querySelector('#txn').value.trim(), f = rf.files[0];
+        if (!txn) return toast('Enter the transaction ID from your receipt.');
+        if (!f) return toast('Upload a screenshot of your receipt.');
+        if (!/^image\/(jpeg|png)$/.test(f.type) || f.size > 2 * 1024 * 1024) return toast('Use a JPG or PNG screenshot up to 2 MB.');
+        e.target.disabled = true;
+        try {
+          const image = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(new Error('Could not read the screenshot.')); fr.readAsDataURL(f); });
+          await api(`/payments/${r.payment.reference}/submit`, { method: 'POST', body: { txn_id: txn, image } });
+          toast('Submitted. We will verify it shortly.'); subscribe();
+        } catch (err) { e.target.disabled = false; toast(err.message); }
+      };
+    } catch (e) { box.innerHTML = `<div class="notice">${esc(e.message)}</div>`; }
+  }));
+}
+
+function account() {
+  shell(skeleton, { tab: 'account', title: 'Account' });
+  loadMe().then(() => {
+    const u = S.me.user, a = S.me.access, pref = localStorage.getItem('theme') || 'auto';
+    const status = { none: 'Free trial not started', trial: 'Free trial', subscribed: 'Premium', expired: 'Expired' }[a.state];
+    shell(`${pagehead('Profile')}<section class="card hero row"><div class="logo-mark" style="width:54px;height:54px;border-radius:16px"><i></i><i></i><i></i></div><div><h2>${esc(u.name)}</h2><div class="muted small">${u.username ? '@' + esc(u.username) : 'Telegram student'}</div></div></section>
+      <div class="card"><h3 style="margin-bottom:8px">Subscription</h3><dl class="kv"><dt>Status</dt><dd>${status}</dd>
+        ${a.trial_started_at ? `<dt>Trial started</dt><dd>${fmtDate(a.trial_started_at)}</dd><dt>Trial expires</dt><dd>${fmtDate(a.trial_expires_at)}</dd>` : ''}
+        ${a.sub_expires_at ? `<dt>Premium expires</dt><dd>${fmtDay(a.sub_expires_at)}</dd>` : ''}<dt>Price</dt><dd>${S.me.price.amount} ${S.me.price.currency} / year</dd></dl>
+        <a class="btn" style="text-decoration:none;margin-top:12px" href="#/subscribe">${a.state === 'subscribed' ? 'Renew subscription' : a.state === 'none' ? 'See plans & trial' : 'Subscribe'}</a></div>
+      <div class="card row between"><div class="grow"><b>Show me on the leaderboard</b><div class="muted small">Only your first name is shown to other students.</div></div><button class="chip ${u.show_lb ? 'on' : ''}" id="lbtoggle">${u.show_lb ? 'On' : 'Off'}</button></div>
+      <div class="card gap"><h3>Appearance</h3><div class="seg" id="themeseg">${['auto', 'light', 'dark'].map((t) => `<button data-t="${t}" class="${pref === t ? 'on' : ''}">${t[0].toUpperCase() + t.slice(1)}</button>`).join('')}</div></div>
+      <div class="card gap"><button class="btn ghost" data-act="tobot">↩ Back to @${esc(S.me.bot)}</button>
+        ${u.is_admin ? `<a class="btn line" style="text-decoration:none" href="#/admin">🛠 Admin dashboard</a>` : ''}
+        ${S.me.support ? `<a class="btn line" style="text-decoration:none" href="https://t.me/${esc(S.me.support)}">Contact support</a>` : ''}</div>
+      ${communityHtml(S.me.community)}
+      <p class="muted small center">ExitPrep Ethiopia 🇪🇹 · Practice material may include clearly-labelled SAMPLE items that are not official exam papers.</p>`, { tab: 'account', title: 'Account' });
+    document.getElementById('lbtoggle').onclick = async (e) => { try { const r = await api('/me/leaderboard', { method: 'POST', body: { show: !S.me.user.show_lb } }); S.me.user.show_lb = r.show_lb; e.target.textContent = r.show_lb ? 'On' : 'Off'; e.target.classList.toggle('on', r.show_lb); } catch (err) { toast(err.message); } };
+    document.querySelectorAll('#themeseg button').forEach((b) => (b.onclick = () => { localStorage.setItem('theme', b.dataset.t); applyTheme(); document.querySelectorAll('#themeseg button').forEach((x) => x.classList.toggle('on', x === b)); }));
+  }).catch((e) => showError(e));
+}
+
+/* ---------- administrator (owner only) ---------- */
+const ADMIN_TABS = { submitted: 'Waiting for review', confirmed: 'Approved', rejected: 'Rejected' };
+async function admin(status = 'submitted') {
+  shell(skeleton, { title: 'Admin', back: true, tab: 'account' });
+  await loadMe();
+  if (!S.me.user.is_admin) { shell('<div class="notice">This screen is for the administrator only.</div>', { title: 'Admin', back: true, tab: 'account' }); return; }
+  const [o, { payments }] = await Promise.all([api('/admin/overview'), api('/admin/payments?status=' + status)]);
+  const byId = Object.fromEntries(payments.map((x) => [x.id, x]));
+  const cards = payments.map((x) => `<div class="card gap">
+      <div class="row between"><div><b>${esc(x.first_name)}</b> ${x.username ? '<span class="muted small">@' + esc(x.username) + '</span>' : ''}</div><span class="badge ${PAY_STATUS[x.status][1]}">${PAY_STATUS[x.status][0]}</span></div>
+      <div class="muted small">${esc(x.reference)} · ${esc(x.provider)} · ${x.amount} ${esc(x.currency)} · TXN ${esc(x.provider_txn || '—')} · ${fmtDay(x.submitted_at || x.created_at)}</div>
+      ${x.reject_reason ? `<div class="small">Reason: ${esc(x.reject_reason)}</div>` : ''}
+      ${x.has_receipt ? `<button class="btn sm line" data-rcpt="${x.id}" style="margin-top:8px">View receipt</button><img alt="Receipt" data-img="${x.id}" style="display:none;max-width:100%;border-radius:12px;margin-top:8px">` : '<div class="muted small">No screenshot.</div>'}
+      ${status === 'submitted' ? `<div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"><button class="btn sm good" data-approve="${x.id}">Approve</button><input type="text" placeholder="Reason if rejecting" data-reason="${x.id}" style="flex:1;min-width:140px"><button class="btn sm line" data-reject="${x.id}">Reject</button></div>` : ''}
+    </div>`).join('');
+  shell(`${pagehead('Admin', 'Only you can see this screen')}
+    <div class="card gap"><dl class="kv"><dt>Subscribers</dt><dd>${o.subscribers}</dd><dt>In free trial</dt><dd>${o.trial}</dd><dt>Waiting for review</dt><dd>${o.pending}</dd><dt>Approved payments</dt><dd>${o.paid} · ${o.revenue} ETB</dd></dl></div>
+    <div class="seg gap" id="admseg">${Object.entries(ADMIN_TABS).map(([k, v]) => `<button data-s="${k}" class="${k === status ? 'on' : ''}">${v}</button>`).join('')}</div>
+    ${cards || '<div class="card muted">Nothing here.</div>'}`, { title: 'Admin', back: true, tab: 'account' });
+  document.querySelectorAll('#admseg button').forEach((b) => (b.onclick = () => admin(b.dataset.s)));
+  document.querySelectorAll('[data-rcpt]').forEach((b) => (b.onclick = async () => {
+    const id = b.dataset.rcpt, img = document.querySelector(`[data-img="${id}"]`);
+    b.disabled = true;
+    try { img.src = (await api('/admin/receipt/' + id)).image; img.style.display = 'block'; b.remove(); }
+    catch (err) { b.disabled = false; toast(err.message); }
+  }));
+  document.querySelectorAll('[data-approve]').forEach((b) => (b.onclick = async () => {
+    const x = byId[b.dataset.approve];
+    if (!await confirmBox('Approve this payment?', `${esc(x.first_name)} pays ${x.amount} ${esc(x.currency)} for ${S.me.price.days} days of premium.`, 'Approve', 'good')) return;
+    try { await api(`/admin/payments/${x.id}/approve`, { method: 'POST' }); toast('Approved. The student has been told.'); admin(status); }
+    catch (err) { toast(err.message); }
+  }));
+  document.querySelectorAll('[data-reject]').forEach((b) => (b.onclick = async () => {
+    const id = b.dataset.reject, reason = document.querySelector(`[data-reason="${id}"]`).value.trim();
+    try { await api(`/admin/payments/${id}/reject`, { method: 'POST', body: { reason } }); toast('Rejected. The student has been told.'); admin(status); }
+    catch (err) { toast(err.message); }
+  }));
+}
+
+/* ---------- FAQ / exam tips ---------- */
+function faq() {
+  loadMe().then(() => {
+    const p = S.me.price;
+    const items = [
+      ['How does the free trial work?', `You get ${48} hours of full access from the moment you tap “Start free trial”. It starts once per Telegram account and cannot be paused or restarted. A live countdown is on your Dashboard.`],
+      ['How much is a subscription?', `${p.amount} ${p.currency} for 1 year of full access. We never charge you automatically.`],
+      ['How do I pay?', 'Open Profile → Subscription, choose a payment method, send the exact amount and enter your transaction ID. An administrator checks it against the account statement, then your subscription is activated. Screenshots are not used as proof of payment.'],
+      ['What happens when my trial or subscription ends?', 'You can no longer start new exams, but all your results, progress, saved questions and mistakes stay safe and visible.'],
+      ['What is the difference between the three exam types?', 'Practice shows the correct answer and a full explanation right after every question. A past-year exam is one year’s paper; explanations appear after you submit. A timed mock gives 1 minute per question and shows explanations after you submit.'],
+      ['Are the questions official?', 'Items labelled SAMPLE are demonstration questions and are not official exam papers. Items labelled official come from papers uploaded by the administrators.'],
+      ['How is the leaderboard calculated?', 'It counts the different questions you answered correctly in the last 7 days. Repeating the same question does not add points. You can hide yourself in Profile.'],
+    ];
+    const tips = ['Take a timed mock exam first to find your weak topics, then practise those topics.', 'Use “Mark for review” on questions you are unsure about and come back to them before you submit.', 'Always read the explanation for questions you got wrong, then re-try them from Review mistakes.', 'Practise in short daily sessions rather than one long session before the exam.', 'Save difficult questions so you can revise them the day before the exam.'];
+    shell(`${pagehead('FAQ & exam tips', 'Answers and study strategy')}
+      <div class="card"><h3 style="margin-bottom:6px">💡 Exam tips</h3><ul class="ticks" style="margin-top:10px">${tips.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>
+      <div class="gap">${items.map(([q, a]) => `<details class="cat"><summary><span class="grow">${esc(q)}</span>${ICON.chev}</summary><div style="padding:0 16px 16px" class="muted">${esc(a)}</div></details>`).join('')}</div>
+      ${communityHtml(S.me.community)}`, { tab: 'faq' });
+  }).catch((e) => showError(e));
+}
+
+/* ---------- Compete: weekly leaderboard ---------- */
+async function compete() {
+  shell(skeleton, { tab: 'compete' });
+  const d = await api('/leaderboard');
+  const medal = (r) => (r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : r);
+  shell(`${pagehead('Compete', 'This week’s top students')}
+    <section class="card hero"><div class="muted small">Your rank this week</div><h2>${d.me ? '#' + d.me.rank : '—'}</h2><div class="muted small">${d.me ? `${d.me.score} different questions answered correctly` : 'Answer questions correctly to enter the ranking.'}${d.me && !d.me.visible ? ' · hidden from others' : ''}</div></section>
+    ${d.top.length ? `<div class="card"><h3 style="margin-bottom:6px">Leaderboard</h3>${d.top.map((x) => `<div class="lbrow ${x.me ? 'me' : ''}"><span class="rank">${medal(x.rank)}</span><b class="grow">${esc(x.name)}${x.me ? ' (you)' : ''}</b><span class="badge">${x.score} pts</span></div>`).join('')}</div>`
+      : `<div class="card empty"><div class="big">🏆</div><h2>No scores yet this week</h2><p class="muted">Finish a practice set to be the first on the board.</p><a class="btn" style="text-decoration:none" href="#/learn">Start practising</a></div>`}
+    <p class="muted small center">1 point = 1 different question answered correctly in the last 7 days. Only first names are shown.</p>`, { tab: 'compete' });
+}
+
+/* ============ 4. actions, router, boot ============ */
+const acts = {
+  back: () => goBack(),
+  theme: (el, ev) => { ev && ev.stopPropagation(); const cur = document.documentElement.dataset.theme; localStorage.setItem('theme', cur === 'dark' ? 'light' : 'dark'); applyTheme(); document.querySelectorAll('.iconbtn2').forEach((b) => (b.textContent = themeEmoji())); },
+  trial: async () => {
+    if (!(await confirmBox('Start your free trial?', 'You get 48 hours of full access starting now. The countdown cannot be paused or restarted.', 'Start 48-hour trial'))) return;
+    try { await api('/trial/start', { method: 'POST' }); await loadMe(); toast('Trial started — enjoy! 🎉'); haptic('success'); render(); } catch (e) { toast(e.message); }
+  },
+  tobot: () => { if (tg && tg.close) tg.close(); else location.href = 'https://t.me/' + S.me.bot; },
+};
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-act]'); if (a && acts[a.dataset.act]) { e.preventDefault(); acts[a.dataset.act](a, e); return; }
+  const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); go(g.dataset.go); return; }
+  const l = e.target.closest('a[href^="#"]'); if (l) { e.preventDefault(); go(l.getAttribute('href')); }
+});
+// live countdowns (display only; the server enforces access)
+setInterval(() => {
+  document.querySelectorAll('[data-cd]').forEach((el) => {
+    const left = Number(el.dataset.cd) - now(); el.textContent = fmtCd(left);
+    if (left <= 0 && !el.dataset.done) { el.dataset.done = 1; loadMe().then(render).catch(() => {}); }
+  });
+}, 1000);
+
+const routes = [[/^#\/home$/, home], [/^#\/learn$/, learn], [/^#\/dept\/(\d+)$/, dept], [/^#\/exam\/(\d+)$/, exam], [/^#\/result\/(\d+)$/, result], [/^#\/progress$/, progress], [/^#\/faq$/, faq], [/^#\/compete$/, compete],
+  [/^#\/saved$/, () => reviewList('saved')], [/^#\/mistakes$/, () => reviewList('mistakes')], [/^#\/subscribe$/, subscribe], [/^#\/account$/, account], [/^#\/admin$/, admin]];
+async function render() {
+  clearTimers(); syncBack();
+  document.querySelectorAll('.modal-back').forEach((m) => m.remove());
+  const h = getHash();
+  for (const [re, fn] of routes) {
+    const m = h.match(re);
+    if (m) {
+      try { await fn(...m.slice(1)); }
+      catch (e) { if (e.data && e.data.error === 'telegram_required') return openInTelegram(); showError(e); }
+      return;
+    }
+  }
+  go('#/home', true);
+}
+window.addEventListener('hashchange', () => { if ((location.hash || '#/home') !== getHash()) { CUR = location.hash || '#/home'; STACK.push(CUR); render(); } });
+
+(async function boot() {
+  setupTelegram(); applyTheme();
+  try { await loadMe(); }
+  catch (e) { if (e.data && e.data.error === 'telegram_required') return openInTelegram(); return showError(e, () => location.reload()); }
+  go(location.hash && /^#\//.test(location.hash) ? location.hash : '#/home', true);
+})();
+})();
+
+</script>
+</body>
+</html>
